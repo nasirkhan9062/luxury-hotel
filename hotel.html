@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurelia Grand Resort & Spa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #162233;
+    --charcoal: #1e2d3d;
+    --gold: #c9a96e;
+    --gold-light: #e8d5a3;
+    --gold-pale: #f5edd8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --text-dark: #1a1a1a;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --border: rgba(201,169,110,0.25);
+    --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    color: var(--text-dark);
+    background: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* TYPOGRAPHY */
+  .serif { font-family: 'Cinzel', serif; }
+  .italic { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+  h1, h2, h3 { font-family: 'Cinzel', serif; letter-spacing: 0.06em; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* DIVIDER */
+  .gold-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 24px auto;
+  }
+
+  /* BUTTON STYLES */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%) skewX(-15deg);
+    transition: transform 0.5s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(110%) skewX(-15deg); }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-outline:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 60px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: var(--transition);
+  }
+  nav.scrolled {
+    background: rgba(13,27,42,0.97);
+    backdrop-filter: blur(20px);
+    height: 68px;
+    box-shadow: 0 1px 0 rgba(201,169,110,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+  }
+  .nav-logo span {
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 300;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 100%;
+    height: 1px;
+    background: var(--gold);
+    transition: right 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { right: 0; }
+
+  .nav-book {
+    padding: 10px 28px;
+    background: var(--gold);
+    color: var(--navy) !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: 600 !important;
+    border: none;
+  }
+  .nav-book:hover { background: var(--gold-light) !important; color: var(--navy) !important; }
+  .nav-book::after { display: none !important; }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(13,27,42,0.45) 0%, rgba(13,27,42,0.2) 40%, rgba(13,27,42,0.6) 100%),
+      url('https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1920&q=80') center/cover no-repeat;
+    transform-origin: center;
+    animation: heroZoom 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 60px;
+    max-width: 800px;
+    animation: heroFadeUp 1.2s ease 0.3s both;
+  }
+
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .hero-tag::before, .hero-tag::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+  .hero-tag::before { width: 40px; }
+  .hero-tag::after { width: 20px; }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(42px, 6vw, 78px);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.08;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 300;
+    color: var(--gold-light);
+    margin-bottom: 28px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.9;
+    max-width: 480px;
+    margin-bottom: 48px;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px; left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    z-index: 2;
+    animation: heroFadeUp 1.2s ease 1s both;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* BOOKING BAR */
+  .booking-bar {
+    background: var(--navy);
+    padding: 0 60px;
+    display: flex;
+    align-items: stretch;
+    border-top: 1px solid rgba(201,169,110,0.15);
+  }
+  .booking-field {
+    flex: 1;
+    padding: 24px 28px;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .booking-field label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .booking-field input, .booking-field select {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+  }
+  .booking-field select option { background: var(--navy); color: var(--white); }
+  .booking-btn {
+    padding: 0 48px;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+  .booking-btn:hover { background: var(--gold-light); }
+
+  /* SECTIONS BASE */
+  section { padding: 100px 60px; }
+
+  .section-center { text-align: center; }
+  .section-title {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.15;
+    letter-spacing: 0.06em;
+  }
+  .section-title.light { color: var(--white); }
+  .section-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.9;
+    letter-spacing: 0.03em;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    padding: 120px 80px;
+  }
+
+  .about-media {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+  }
+  .about-img-accent {
+    position: absolute;
+    bottom: -32px; right: -32px;
+    width: 55%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    border: 6px solid var(--white);
+  }
+  .about-badge {
+    position: absolute;
+    top: 32px; left: -24px;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .about-badge-num {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1;
+    display: block;
+  }
+  .about-badge-text {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .about-text .section-label { justify-content: flex-start; }
+  .about-text .section-title { text-align: left; }
+  .about-text .section-body { text-align: left; margin: 0; max-width: 100%; margin-bottom: 32px; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 40px 0;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ROOMS */
+  #rooms {
+    background: var(--cream);
+  }
+  .rooms-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .room-card {
+    background: var(--white);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+  }
+  .room-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(13,27,42,0.12); }
+
+  .room-img-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+  .room-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+  .room-card:hover .room-img-wrap img { transform: scale(1.06); }
+
+  .room-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(13,27,42,0.7) 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+  }
+  .room-card:hover .room-overlay { opacity: 1; }
+
+  .room-tag {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--navy);
+    padding: 4px 12px;
+    position: absolute;
+    top: 20px; left: 20px;
+  }
+
+  .room-body { padding: 28px; }
+  .room-name {
+    font-family: 'Cinzel', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .room-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .room-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid rgba(201,169,110,0.2);
+  }
+  .room-price {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--gold);
+  }
+  .room-price span {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-light);
+  }
+  .room-link {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+  }
+  .room-link:hover { color: var(--gold); }
+  .room-link svg { transition: transform 0.3s; }
+  .room-link:hover svg { transform: translateX(4px); }
+
+  /* AMENITIES */
+  #amenities {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  #amenities::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .amenities-header {
+    text-align: center;
+    margin-bottom: 72px;
+    position: relative;
+    z-index: 1;
+  }
+  .amenities-header .section-body { color: rgba(255,255,255,0.5); }
+
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    z-index: 1;
+  }
+
+  .amenity-item {
+    padding: 48px 32px;
+    background: var(--navy);
+    text-align: center;
+    transition: background 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .amenity-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .amenity-item:hover { background: var(--charcoal); }
+  .amenity-item:hover::before { opacity: 1; }
+
+  .amenity-icon {
+    width: 52px; height: 52px;
+    background: rgba(201,169,110,0.12);
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    transition: var(--transition);
+    font-size: 22px;
+  }
+  .amenity-item:hover .amenity-icon {
+    background: rgba(201,169,110,0.2);
+    border-color: var(--gold);
+    transform: scale(1.1);
+  }
+
+  .amenity-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .amenity-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+  }
+
+  /* GALLERY */
+  #gallery {
+    background: var(--white);
+    padding-bottom: 120px;
+  }
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 220px);
+    gap: 8px;
+  }
+  .gallery-item {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .gallery-item:nth-child(5) { grid-column: 3 / 5; grid-row: 2 / 4; }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+    display: block;
+  }
+  .gallery-item:hover img { transform: scale(1.08); }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,27,42,0.5);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay-icon {
+    width: 48px; height: 48px;
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.7);
+    transition: transform 0.4s;
+  }
+  .gallery-item:hover .gallery-overlay-icon { transform: scale(1); }
+
+  /* TESTIMONIALS */
+  #testimonials {
+    background: var(--cream);
+  }
+  .testi-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .testi-card {
+    background: var(--white);
+    padding: 40px 36px;
+    position: relative;
+    border-top: 2px solid var(--gold);
+    transition: var(--transition);
+  }
+  .testi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(13,27,42,0.08);
+  }
+
+  .testi-quote {
+    font-size: 60px;
+    line-height: 0.7;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 16px;
+    display: block;
+    opacity: 0.5;
+  }
+
+  .testi-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+
+  .testi-stars {
+    display: flex;
+    gap: 3px;
+    margin-bottom: 20px;
+  }
+  .star { color: var(--gold); font-size: 12px; }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(201,169,110,0.2);
+  }
+  .testi-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+  }
+  .testi-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+    letter-spacing: 0.06em;
+  }
+  .testi-location {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+
+  .contact-info {
+    padding: 100px 80px;
+    background:
+      linear-gradient(135deg, rgba(201,169,110,0.06) 0%, transparent 60%),
+      var(--navy);
+    border-right: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .contact-info .section-title {
+    font-size: clamp(28px, 3vw, 40px);
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+
+  .contact-info .section-body {
+    color: rgba(255,255,255,0.5);
+    text-align: left;
+    max-width: 100%;
+    margin: 0 0 40px;
+  }
+
+  .contact-details { display: flex; flex-direction: column; gap: 24px; }
+
+  .contact-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .contact-icon {
+    width: 40px; height: 40px;
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+  .contact-item-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .contact-item-value {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .contact-form {
+    padding: 100px 80px;
+    background: var(--charcoal);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 36px;
+    letter-spacing: 0.06em;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .form-group label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: rgba(201,169,110,0.5); }
+  .form-group select option { background: var(--navy); }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy-mid);
+    padding: 72px 80px 40px;
+    border-top: 1px solid rgba(201,169,110,0.12);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-logo-name {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    display: block;
+  }
+  .footer-logo-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+  .footer-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.8;
+    margin-bottom: 28px;
+    letter-spacing: 0.03em;
+  }
+  .social-links { display: flex; gap: 12px; }
+  .social-link {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    transition: var(--transition);
+  }
+  .social-link:hover {
+    background: rgba(201,169,110,0.15);
+    border-color: rgba(201,169,110,0.4);
+    color: var(--gold);
+  }
+
+  .footer-col h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col ul a {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-col ul a::before {
+    content: '';
+    display: block;
+    width: 12px; height: 1px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.3s;
+    flex-shrink: 0;
+  }
+  .footer-col ul a:hover { color: var(--gold-light); padding-left: 2px; }
+  .footer-col ul a:hover::before { opacity: 1; }
+
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-copy {
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+  }
+  .footer-award {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+  }
+  .award-icon {
+    color: var(--gold);
+    font-size: 16px;
+    opacity: 0.7;
+  }
+
+  /* EXPERIENCE STRIP */
+  .experience-strip {
+    background: var(--gold);
+    padding: 28px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .exp-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+  .exp-item span { font-size: 18px; }
+  .exp-sep {
+    width: 1px; height: 24px;
+    background: rgba(13,27,42,0.2);
+  }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  @media (max-width: 1100px) {
+    nav { padding: 0 32px; }
+    .nav-links { gap: 24px; }
+    section { padding: 80px 40px; }
+    #about { padding: 80px 40px; grid-template-columns: 1fr; gap: 60px; }
+    .about-img-accent { bottom: -20px; right: -16px; }
+    .about-badge { left: -12px; }
+    .rooms-grid { grid-template-columns: 1fr 1fr; }
+    .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 200px); }
+    .gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+    .gallery-item:nth-child(5) { grid-column: 2 / 3; grid-row: 3 / 4; }
+    .testi-grid { grid-template-columns: 1fr; gap: 20px; }
+    #contact { grid-template-columns: 1fr; }
+    .contact-info { padding: 60px 40px; }
+    .contact-form { padding: 60px 40px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .booking-bar { flex-wrap: wrap; padding: 0 32px; }
+    .booking-field { padding: 16px 20px; }
+    .booking-btn { width: 100%; padding: 16px; }
+    .experience-strip { flex-wrap: wrap; gap: 16px; padding: 20px 40px; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 24px; }
+    .hero-scroll { display: none; }
+    section { padding: 64px 24px; }
+    .rooms-grid { grid-template-columns: 1fr; }
+    .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 48px 24px 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .experience-strip { padding: 16px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">NASIR <span>Grand</span></a>
+  <ul class="nav-links">
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#amenities">Experiences</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact" class="nav-book">Reserve</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Est. 1924 &nbsp;·&nbsp; Maldives &nbsp;·&nbsp; 5-Star Luxury</div>
+    <h1 class="hero-title">Where the Ocean<br>Meets Eternity</h1>
+    <p class="hero-subtitle">An Extraordinary World Awaits</p>
+    <p class="hero-desc">Nestled above crystalline waters, Aurelia Grand offers an unparalleled escape where refined elegance and untouched nature become one seamless experience.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        Reserve Your Suite
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#gallery" class="btn-outline">Explore Resort</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- BOOKING BAR -->
+<div class="booking-bar">
+  <div class="booking-field">
+    <label>Check In</label>
+    <input type="date" id="checkin">
+  </div>
+  <div class="booking-field">
+    <label>Check Out</label>
+    <input type="date" id="checkout">
+  </div>
+  <div class="booking-field">
+    <label>Guests</label>
+    <select>
+      <option>1 Guest</option>
+      <option selected>2 Guests</option>
+      <option>3 Guests</option>
+      <option>4 Guests</option>
+    </select>
+  </div>
+  <div class="booking-field">
+    <label>Suite Type</label>
+    <select>
+      <option>Any Suite</option>
+      <option>Ocean Villa</option>
+      <option>Water Bungalow</option>
+      <option>Presidential Suite</option>
+    </select>
+  </div>
+  <button class="booking-btn">Check Availability</button>
+</div>
+
+<!-- EXPERIENCE STRIP -->
+<div class="experience-strip">
+  <div class="exp-item"><span>✦</span> Private Overwater Villas</div>
+  <div class="exp-sep"></div>
+  <div class="exp-item"><span>✦</span> Michelin-Star Cuisine</div>
+  <div class="exp-sep"></div>
+  <div class="exp-item"><span>✦</span> Sunrise Wellness Spa</div>
+  <div class="exp-sep"></div>
+  <div class="exp-item"><span>✦</span> Curated Excursions</div>
+  <div class="exp-sep"></div>
+  <div class="exp-item"><span>✦</span> Butler Concierge</div>
+</div>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-media reveal">
+    <img class="about-img-main" src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" alt="Hotel exterior">
+    <img class="about-img-accent" src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80" alt="Infinity pool">
+    <div class="about-badge">
+      <span class="about-badge-num">100</span>
+      <span class="about-badge-text">Years of Excellence</span>
+    </div>
+  </div>
+  <div class="about-text reveal reveal-delay-2">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">A Legacy of<br>Timeless Luxury</h2>
+    <div class="gold-divider" style="margin: 20px 0;"></div>
+    <p class="section-body">Since 1924, Aurelia Grand has set the benchmark for extraordinary hospitality. Perched above the Indian Ocean, our overwater sanctuary blends Maldivian tradition with contemporary elegance — a place where every detail is an act of devotion to your comfort.</p>
+    <p class="section-body" style="margin-top: 16px;">Our 48 private villas float above the turquoise lagoon, each offering direct ocean access, a private infinity pool, and unobstructed views of the most spectacular sunsets on Earth.</p>
+    <div class="about-stats">
+      <div class="stat-item">
+        <span class="stat-num">48</span>
+        <span class="stat-label">Private Villas</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Fine Restaurants</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">★ 5</span>
+        <span class="stat-label">AAA Diamond</span>
+      </div>
+    </div>
+    <a href="#rooms" class="btn-primary">
+      Discover Our Suites
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ROOMS -->
+<section id="rooms">
+  <div class="rooms-header reveal">
+    <div class="section-label" style="justify-content: center;">Accommodations</div>
+    <h2 class="section-title" style="margin-bottom: 16px;">Rooms & Suites</h2>
+    <div class="gold-divider"></div>
+    <p class="section-body" style="margin-top: 16px;">Each villa is a private world — designed with rare materials, curated art, and seamless indoor-outdoor living above the most beautiful ocean on Earth.</p>
+  </div>
+
+  <div class="rooms-grid">
+    <div class="room-card reveal">
+      <div class="room-img-wrap">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80" alt="Ocean Villa">
+        <span class="room-tag">Most Popular</span>
+        <div class="room-overlay">
+          <a href="#contact" class="btn-primary" style="font-size: 9px; padding: 12px 24px;">Book Now</a>
+        </div>
+      </div>
+      <div class="room-body">
+        <h3 class="room-name">Overwater Ocean Villa</h3>
+        <p class="room-desc">180° ocean panorama from your private deck. Soak in the glass-floor bathtub as tropical fish glide beneath you.</p>
+        <div class="room-footer">
+          <div class="room-price">$1,280 <span>/ night</span></div>
+          <a href="#contact" class="room-link">
+            Details
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card reveal reveal-delay-1">
+      <div class="room-img-wrap">
+        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=700&q=80" alt="Beach Suite">
+        <div class="room-overlay">
+          <a href="#contact" class="btn-primary" style="font-size: 9px; padding: 12px 24px;">Book Now</a>
+        </div>
+      </div>
+      <div class="room-body">
+        <h3 class="room-name">Coral Beach Suite</h3>
+        <p class="room-desc">Direct beach access from your private garden. Sunrise yoga pavilion and an open-air rain shower surrounded by frangipani.</p>
+        <div class="room-footer">
+          <div class="room-price">$890 <span>/ night</span></div>
+          <a href="#contact" class="room-link">
+            Details
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card reveal reveal-delay-2">
+      <div class="room-img-wrap">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=80" alt="Presidential">
+        <span class="room-tag">Signature</span>
+        <div class="room-overlay">
+          <a href="#contact" class="btn-primary" style="font-size: 9px; padding: 12px 24px;">Book Now</a>
+        </div>
+      </div>
+      <div class="room-body">
+        <h3 class="room-name">Presidential Water Palace</h3>
+        <p class="room-desc">Three bedrooms, a private chef, infinity pool, and a dedicated butler. The pinnacle of Maldivian luxury living.</p>
+        <div class="room-footer">
+          <div class="room-price">$4,600 <span>/ night</span></div>
+          <a href="#contact" class="room-link">
+            Details
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section id="amenities">
+  <div class="amenities-header reveal">
+    <div class="section-label" style="justify-content: center; color: rgba(201,169,110,0.8);">Experiences</div>
+    <h2 class="section-title light" style="margin-bottom: 16px;">World-Class Amenities</h2>
+    <div class="gold-divider"></div>
+    <p class="section-body" style="margin-top: 16px;">Every amenity is designed to elevate your stay into something far beyond the ordinary — a life fully lived.</p>
+  </div>
+
+  <div class="amenities-grid reveal reveal-delay-1">
+    <div class="amenity-item">
+      <div class="amenity-icon">🧖</div>
+      <h3 class="amenity-name">Aurelia Spa</h3>
+      <p class="amenity-desc">12 treatment rooms, traditional Maldivian Dhivehi therapies, and a floating relaxation pool suspended over the ocean.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">🏊</div>
+      <h3 class="amenity-name">Infinity Pools</h3>
+      <p class="amenity-desc">Three tiered infinity pools with unobstructed ocean horizons. Sunrise and sunset swim sessions, private cabanas.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">🍽️</div>
+      <h3 class="amenity-name">Fine Dining</h3>
+      <p class="amenity-desc">Three restaurants helmed by Michelin-starred chefs. From ocean-to-table tasting menus to intimate sunset dinners.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">🤿</div>
+      <h3 class="amenity-name">Ocean Adventures</h3>
+      <p class="amenity-desc">Guided snorkelling, freediving, sunset dolphin cruises, and private sailing expeditions to remote atolls.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">💪</div>
+      <h3 class="amenity-name">Fitness Pavilion</h3>
+      <p class="amenity-desc">Overwater gym with Technogym equipment. Sunrise yoga, Pilates, and personal training sessions at dawn.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">🛥️</div>
+      <h3 class="amenity-name">Private Seaplane</h3>
+      <p class="amenity-desc">Direct seaplane transfers from Malé, island-hopping charters, and aerial sunset tours over the atoll.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">📚</div>
+      <h3 class="amenity-name">Kids' Coral Club</h3>
+      <p class="amenity-desc">Marine biology programmes, sandcastle workshops, and guided snorkel tours for young ocean explorers.</p>
+    </div>
+    <div class="amenity-item">
+      <div class="amenity-icon">🕯️</div>
+      <h3 class="amenity-name">Events & Weddings</h3>
+      <p class="amenity-desc">Exchange vows above the Indian Ocean. Our planners curate every detail of your celebration to perfection.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="section-label" style="justify-content: center;">Visual Journey</div>
+    <h2 class="section-title" style="margin-bottom: 16px;">A Glimpse of Paradise</h2>
+    <div class="gold-divider"></div>
+  </div>
+
+  <div class="gallery-grid reveal reveal-delay-1">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=900&q=80" alt="Aerial resort">
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80" alt="Beach walk">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80" alt="Dining">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Spa">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1439130490301-25e322d88054?w=900&q=80" alt="Sunset pool">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1615880484746-a134be9a6ecf?w=600&q=80" alt="Villa interior">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1596436889106-be35e843f974?w=600&q=80" alt="Snorkelling">
+      <div class="gallery-overlay"><div class="gallery-overlay-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3V15M3 9H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testi-header reveal">
+    <div class="section-label" style="justify-content: center;">Guest Voices</div>
+    <h2 class="section-title" style="margin-bottom: 16px;">What Our Guests Say</h2>
+    <div class="gold-divider"></div>
+  </div>
+
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <span class="testi-quote">"</span>
+      <p class="testi-text">Aurelia Grand transcends every expectation. Waking to the sound of the ocean beneath your villa floor, the spa rituals at dawn — we have stayed at Six Senses, Aman, and One&Only, and nothing compares to the devotion of care here.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Charlotte B.">
+        <div>
+          <div class="testi-name">Charlotte Beaumont</div>
+          <div class="testi-location">London, United Kingdom</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-1">
+      <span class="testi-quote">"</span>
+      <p class="testi-text">We celebrated our anniversary here and our butler remembered every detail — favourite cocktails, the view we preferred, our breakfast timing. The underwater dining experience was simply unforgettable. Pure magic.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Marco R.">
+        <div>
+          <div class="testi-name">Marco & Elena Russo</div>
+          <div class="testi-location">Milan, Italy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-2">
+      <span class="testi-quote">"</span>
+      <p class="testi-text">From the moment the seaplane descended and I saw those overwater villas stretching into the blue, I knew this was unlike anywhere I had ever been. The Aurelia Spa's Maldivian ritual is worth the journey alone.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b612b977?w=100&q=80" alt="Priya K.">
+        <div>
+          <div class="testi-name">Priya Krishnamurthy</div>
+          <div class="testi-location">Singapore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <div class="contact-info">
+    <div class="section-label" style="color: var(--gold);">Get in Touch</div>
+    <h2 class="contact-info section-title" style="color: var(--white); font-size: clamp(26px, 2.8vw, 38px); margin-bottom: 16px;">Begin Your<br>Extraordinary Journey</h2>
+    <div class="gold-divider" style="margin: 20px 0;"></div>
+    <p class="section-body" style="color: rgba(255,255,255,0.5); text-align: left; max-width: 100%;">Our reservations team is available around the clock to help you plan the perfect escape. Every enquiry is treated with the same care as a guest arrival.</p>
+
+    <div class="contact-details" style="margin-top: 40px;">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-value">Located on the banks of Powai Lake,<br>The Westin Mumbai Powai Lake is a Marriott hotel that offers comfortable accommodations.</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-item-label">Reservations</div>
+          <div class="contact-item-value">+861 951 5634</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value">nk420463@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-item-label">Concierge Hours</div>
+          <div class="contact-item-value">24 Hours · 7 Days a Week</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <h3 class="form-title">Reserve Your Stay</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Nasir">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="khsn">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="nk420463@gmail.com">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Arrival Date</label>
+        <input type="date">
+      </div>
+      <div class="form-group">
+        <label>Departure Date</label>
+        <input type="date">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Suite Preference</label>
+      <select>
+        <option>Overwater Ocean Villa</option>
+        <option>Coral Beach Suite</option>
+        <option>Presidential Water Palace</option>
+        <option>Honeymoon Retreat</option>
+        <option>Family Ocean Residence</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Special Requests</label>
+      <textarea rows="3" placeholder="Anniversary, dietary needs, excursion requests..."></textarea>
+    </div>
+    <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;">
+      Send Enquiry
+      <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo-name">Aurelia Grand</span>
+      <span class="footer-logo-sub">Resort & Spa · Maldives</span>
+      <p class="footer-desc">A sanctuary of refined luxury above the Indian Ocean. Where every moment is crafted with intention, and every sunset belongs to you alone.</p>
+      <div class="social-links">
+        <a class="social-link" href="#" title="Instagram">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a class="social-link" href="#" title="Facebook">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a class="social-link" href="#" title="Twitter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a class="social-link" href="#" title="YouTube">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>The Resort</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Awards & Accolades</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press & Media</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Experiences</h4>
+      <ul>
+        <li><a href="#">Rooms & Suites</a></li>
+        <li><a href="#">Aurelia Spa</a></li>
+        <li><a href="#">Dining</a></li>
+        <li><a href="#">Weddings</a></li>
+        <li><a href="#">Ocean Excursions</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Guest Services</h4>
+      <ul>
+        <li><a href="#">Reservations</a></li>
+        <li><a href="#">Concierge</a></li>
+        <li><a href="#">Transfers</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Aurelia Grand Resort & Spa. All rights reserved.</span>
+    <div class="footer-award">
+      <span class="award-icon">✦</span>
+      Forbes Five-Star · AAA Five-Diamond · Condé Nast Traveller Top 100
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Set default dates
+  const today = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+  const nextWeek = new Date(today); nextWeek.setDate(nextWeek.getDate() + 7);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('checkin').value = fmt(tomorrow);
+  document.getElementById('checkout').value = fmt(nextWeek);
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => obs.observe(r));
+
+  // Smooth anchor scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
